@@ -83,3 +83,4 @@ rowData(imat) <- res
 # imat[which(res$log2FoldChange <= -log2(1.5) & res$padj <= 0.05)]
 
 ## Save object
+saveRDS(object=imat, file="data/diffLoops72vs0.rds")

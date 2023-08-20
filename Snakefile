@@ -5,7 +5,9 @@ rule all:
     "data/diffLoops72vs0.rds",
     "data/pixelMats.h5",
     "data/pixelMats.rds",
-    "data/pixelPileup.rds"
+    "data/pixelPileup.rds",
+    "data/domainPileup.rds",
+    "data/diffBoundaries.rds"
 
 ## Differential loops between 0 and 72 hours
 rule findDiffLoops:
@@ -41,7 +43,7 @@ rule extractPixelMats:
     Rscript scripts/extractPixelMats.R
     """
 
-## Create pileup matrix
+## Create pixel pileup matrix
 rule pixelPileup:
   input:
     "data/raw/hic/MEGA_K562_WT_inter.hic",
@@ -57,3 +59,39 @@ rule pixelPileup:
     module load r/4.3.1;
     Rscript scripts/pileupPixels.R
     """
+
+## Create domain pileup matrix
+rule domainPileup:
+  input:
+    "data/raw/hic/MEGA_K562_WT_inter.hic",
+	  "data/diffLoops72vs0.rds",
+	  "scripts/pileupDomains.R"
+  output:
+	  "data/domainPileup.rds"
+  resources:
+    runtime='2h',
+    mem='16GB'
+  shell:
+    """
+    module load r/4.3.1;
+    Rscript scripts/pileupDomains.R
+    """
+
+## Create diff boundary pileup matrix
+rule boundaryPileup:
+  input:
+    "data/raw/hic/MEGA_K562_WT_0_inter.hic",
+    "data/raw/hic/MEGA_K562_WT_4320_inter.hic",
+    "data/diffLoops72vs0.rds",
+    "scripts/pileupBoundaries.R"
+  output:
+	  "data/diffBoundaries.rds"
+  resources:
+    runtime='4h',
+    mem='16GB'
+  shell:
+    """
+    module load r/4.3.1;
+    Rscript scripts/pileupBoundaries.R
+    """
+

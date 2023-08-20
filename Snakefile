@@ -7,7 +7,8 @@ rule all:
     "data/pixelMats.rds",
     "data/pixelPileup.rds",
     "data/domainPileup.rds",
-    "data/diffBoundaries.rds"
+    "data/diffBoundaries.rds",
+    "plots/pileupPlotExamples.pdf"
 
 ## Differential loops between 0 and 72 hours
 rule findDiffLoops:
@@ -95,3 +96,19 @@ rule boundaryPileup:
     Rscript scripts/pileupBoundaries.R
     """
 
+## Create pileup plot example figure
+rule pileupPlotExample:
+  input:
+    "data/pixelPileup.rds",
+    "data/domainPileup.rds",
+    "data/diffBoundaries.rds"
+  output:
+    "plots/pileupPlotExamples.pdf"
+  resources:
+    runtime='1m',
+    mem='2GB'
+  shell:
+    """
+    module load r/4.3.1
+    Rscript scripts/pileupPlotExamples.R
+    """

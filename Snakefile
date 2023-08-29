@@ -8,7 +8,8 @@ rule all:
     "data/pixelPileup.rds",
     "data/domainPileup.rds",
     "data/diffBoundaries.rds",
-    "plots/pileupPlotExamples.pdf"
+    "plots/pileupPlotExamples.pdf",
+    "plots/loopScores.txt"
 
 ## Differential loops between 0 and 72 hours
 rule findDiffLoops:
@@ -111,4 +112,19 @@ rule pileupPlotExample:
     """
     module load r/4.3.1
     Rscript scripts/pileupPlotExamples.R
+    """
+
+## Calculate enrichments for different backgrounds
+rule loopScoring:
+  input:
+    "data/pixelMats.rds"
+  output:
+    "plots/loopScores.txt"
+  resources:
+    runtime='2m',
+    mem='1GB'
+  shell:
+    """
+    module load r/4.3.1
+    Rscript scripts/loopScoring.R
     """

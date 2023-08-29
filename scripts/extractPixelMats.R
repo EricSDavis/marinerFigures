@@ -27,7 +27,7 @@ mats <- pullHicMatrices(
   files=hicFiles,
   binSize=10e3,
   h5File=h5File,
-  norm='KR',
+  norm='SCALE',
   blockSize=1e7
 )
 
